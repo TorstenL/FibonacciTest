@@ -12,7 +12,7 @@ namespace FibonacciTestGui
     {
         private BigInteger _currentFibonacciResult = 1;
         private readonly HttpClient _httpClient;
-        public static string Baseaddress = "http://localhost:5000";
+        public static string Baseaddress = "http://localhost:1337";
         public static string WebServicePath = "/api/v1/fib";
 
         public FibonacciModel()
