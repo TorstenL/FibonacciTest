@@ -3,8 +3,34 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:FibonacciTestGui"
+        xmlns:fib="clr-namespace:FibonacciTestGui"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    <local:FibonacciView />
+        Title="Get me the Fibonaccis" Height="600" Width="800"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource PrimaryHueMidBrush}"
+        FontFamily="{DynamicResource MaterialDesignFont}">
+    <Window.Resources>
+        <fib:ViewModel x:Key="ViewModel" />
+    </Window.Resources>
+    <Window.DataContext>
+        <fib:ViewModel />
+    </Window.DataContext>
+    <GroupBox Style="{DynamicResource MaterialDesignGroupBox}"
+              Background="{DynamicResource PrimaryHueLightBrush}"
+              materialDesign:ShadowAssist.ShadowDepth="Depth3" Margin="4">
+        <GroupBox.HeaderTemplate>
+            <DataTemplate>
+                <StackPanel Margin="2" Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="MathNormBox" Height="32" Width="32" />
+                    <TextBlock Style="{DynamicResource MaterialDesignHeadlineTextBlock}" Margin="16 0 0 0">Get me the Fibonaccis</TextBlock>
+                </StackPanel>
+            </DataTemplate>
+        </GroupBox.HeaderTemplate>
+        <fib:FibonacciView />
+    </GroupBox>
 </Window>

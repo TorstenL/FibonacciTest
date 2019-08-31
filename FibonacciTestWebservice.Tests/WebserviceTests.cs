@@ -32,7 +32,7 @@ namespace FibonacciTestWebservice.Tests
                 Assert.True(result.StatusCode == HttpStatusCode.BadRequest);
             }
         }
-        
+
         [Test]
         public void RightResult()
         {
@@ -42,8 +42,8 @@ namespace FibonacciTestWebservice.Tests
                 request.Content = new StringContent("61", Encoding.UTF8, "text/plain");
                 var result = httpClient.SendAsync(request).Result;
                 var body = result.Content.ReadAsStringAsync().Result;
-                Assert.AreEqual(result.StatusCode,HttpStatusCode.OK);
-                Assert.AreEqual(body,"Fibonacci_61: 2504730781961");
+                Assert.AreEqual(result.StatusCode, HttpStatusCode.OK);
+                Assert.AreEqual(body, "Fibonacci_61: 2504730781961");
             }
         }
     }

@@ -10,17 +10,19 @@ namespace FibonacciTestGui
 {
     public class FibonacciModel : INotifyPropertyChanged
     {
-        private BigInteger _currentFibonacciResult = 1;
-        private readonly HttpClient _httpClient;
         public static string Baseaddress = "http://localhost:1337";
         public static string WebServicePath = "/api/v1/fib";
+
+        private static readonly string BodyResultSuffix = "Fibonacci_{0}: ";
+        private readonly HttpClient _httpClient;
+        private BigInteger _currentFibonacciResult = BigInteger.Zero;
 
         public FibonacciModel()
         {
             //https://github.com/dotnet/corefx/issues/28135
             var handler = new WinHttpHandler();
             _httpClient = new HttpClient(handler);
-            _httpClient.BaseAddress =new Uri(Baseaddress);
+            _httpClient.BaseAddress = new Uri(Baseaddress);
         }
 
         public BigInteger CurrentFibonacciResult
@@ -34,6 +36,8 @@ namespace FibonacciTestGui
             }
         }
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public async void QueryFibonacciResult(long index)
         {
             try
@@ -42,14 +46,14 @@ namespace FibonacciTestGui
                 {
                     Method = HttpMethod.Get,
                     RequestUri = new Uri(Baseaddress + WebServicePath),
-                    Content = new StringContent(index.ToString(), Encoding.UTF8, "text/plain"),
+                    Content = new StringContent(index.ToString(), Encoding.UTF8, "text/plain")
                 };
                 var response = await _httpClient.SendAsync(request).ConfigureAwait(false);
                 response.EnsureSuccessStatusCode();
                 var body = response.Content.ReadAsStringAsync().Result;
-                ParseBodyAndUpdateResult(index,body);
+                ParseBodyAndUpdateResult(index, body);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 CurrentFibonacciResult = BigInteger.Zero;
             }
@@ -57,17 +61,11 @@ namespace FibonacciTestGui
 
         private void ParseBodyAndUpdateResult(long index, string body)
         {
-            if (body.StartsWith($"Fibonacci_{index}: "))
-            {
-                if (BigInteger.TryParse(body.Substring($"Fibonacci_{index}: ".Length),
-                    out BigInteger tempresult))
-                {
+            if (body.StartsWith(string.Format(BodyResultSuffix, index)))
+                if (BigInteger.TryParse(body.Substring(string.Format(BodyResultSuffix, index).Length),
+                    out var tempresult))
                     CurrentFibonacciResult = tempresult;
-                }
-            }
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

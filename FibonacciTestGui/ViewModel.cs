@@ -10,6 +10,10 @@ namespace FibonacciTestGui
     {
         private readonly FibonacciModel _fibonacciModel;
         private CancellationTokenSource _cancelToken;
+        private long _currentFibonacciIndex;
+
+        private string _currentFibonacciResult;
+
         public ViewModel()
         {
             _fibonacciModel = new FibonacciModel();
@@ -17,37 +21,8 @@ namespace FibonacciTestGui
             _cancelToken.Token.Register(UpdateResult);
             _fibonacciModel.PropertyChanged += FibonacciModelOnPropertyChanged;
             PropertyChanged += OnPropertyChanged;
+            CurrentFibonacciResult = _fibonacciModel.CurrentFibonacciResult.ToString();
         }
-       
-        private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName.Equals(nameof(CurrentFibonacciIndex)))
-            {
-                if (_cancelToken.IsCancellationRequested)
-                {
-                    _cancelToken.Dispose();
-                    _cancelToken = new CancellationTokenSource();
-                    _cancelToken.Token.Register(UpdateResult);
-                }
-                _cancelToken.CancelAfter(TimeSpan.FromSeconds(1));
-            }
-        }
-
-        private void UpdateResult()
-        {
-            _fibonacciModel.QueryFibonacciResult(_currentFibonacciIndex);
-        }
-        
-        private void FibonacciModelOnPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if(e.PropertyName.Equals(nameof(CurrentFibonacciResult)))
-            {
-                CurrentFibonacciResult = _fibonacciModel.CurrentFibonacciResult.ToString();
-            }
-        }
-
-        private string _currentFibonacciResult = "0";
-        private long _currentFibonacciIndex = 0;
 
         public long CurrentFibonacciIndex
         {
@@ -72,6 +47,32 @@ namespace FibonacciTestGui
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName.Equals(nameof(CurrentFibonacciIndex)))
+            {
+                if (_cancelToken.IsCancellationRequested)
+                {
+                    _cancelToken.Dispose();
+                    _cancelToken = new CancellationTokenSource();
+                    _cancelToken.Token.Register(UpdateResult);
+                }
+
+                _cancelToken.CancelAfter(TimeSpan.FromSeconds(1));
+            }
+        }
+
+        private void UpdateResult()
+        {
+            _fibonacciModel.QueryFibonacciResult(_currentFibonacciIndex);
+        }
+
+        private void FibonacciModelOnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName.Equals(nameof(CurrentFibonacciResult)))
+                CurrentFibonacciResult = _fibonacciModel.CurrentFibonacciResult.ToString();
+        }
 
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

@@ -3,24 +3,30 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:fib="clr-namespace:FibonacciTestGui"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
-    <UserControl.Resources>
-        <fib:ViewModel x:Key="ViewModel"/>
-    </UserControl.Resources>
-    <Grid DataContext="{Binding Source={StaticResource ViewModel}}">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="100" />
             <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>        
-        <TextBlock Text="FibonacciIndex" Grid.Row="0" Grid.Column="0"/>
-        <TextBox Text="{Binding Path=CurrentFibonacciIndex,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="1"/>
-        <TextBlock Text="Ergebniss" Grid.Row="1" Grid.Column="0"/>
-        <TextBlock Text="{Binding Path=CurrentFibonacciResult}" TextWrapping="Wrap" Grid.Row="1" Grid.Column="1"/>
+        </Grid.ColumnDefinitions>
+        <GroupBox Style="{DynamicResource MaterialDesignGroupBox}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                  Background="{DynamicResource PrimaryHueLightBrush}"
+                  Header="Index der Fibonacci Zahl" />
+        <TextBox Text="{Binding Path=CurrentFibonacciIndex,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                 Style="{DynamicResource MaterialDesignFloatingHintTextBox}" FontSize="18" Grid.Row="1" Grid.Column="0"
+                 Grid.ColumnSpan="2" Margin="30" />
+
+        <GroupBox Style="{DynamicResource MaterialDesignGroupBox}" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+                  Background="{DynamicResource PrimaryHueLightBrush}"
+                  Header="Ergebniss" />
+        <TextBlock Text="{Binding Path=CurrentFibonacciResult}" TextWrapping="Wrap" Grid.Row="3" Grid.Column="0"
+                   Grid.ColumnSpan="2" />
     </Grid>
 </UserControl>
