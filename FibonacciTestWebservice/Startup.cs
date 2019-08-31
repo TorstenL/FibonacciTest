@@ -27,7 +27,7 @@ namespace FibonacciTestWebservice
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             serviceCollection.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo {Title = "My API", Version = "v1"});
+                c.SwaggerDoc("v1", new OpenApiInfo {Title = "Fibonacci Api", Version = "v1"});
             });
         }
 
@@ -36,7 +36,7 @@ namespace FibonacciTestWebservice
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Fibonacci Api V1");
                 c.RoutePrefix = string.Empty;
             });
             app.UseMvcWithDefaultRoute();
