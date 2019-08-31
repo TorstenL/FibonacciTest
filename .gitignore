@@ -1,0 +1,7 @@
+/.idea
+/FibonacciTestGui/obj/
+/FibonacciTestGui/bin/
+/FibonacciTestWebservice/obj/
+/FibonacciTestWebservice/bin/
+/FibonacciTestWebservice.Tests/obj/
+/FibonacciTestWebservice.Tests/bin/
